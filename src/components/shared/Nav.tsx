@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { navLinks, site } from "@/content/site";
+import Icon from "@/components/shared/Icon";
+import Logo from "@/components/shared/Logo";
 
 type Props = {
   /** key of the nav link to mark as current page */
@@ -16,7 +18,8 @@ type Props = {
  * is dark or red (sections declare this with data-theme).
  */
 export default function Nav({ active, talkHref }: Props) {
-  const [ink, setInk] = useState<"dark" | "light">("dark");
+  // dark = charcoal text (light bg), light = cream text (dark bg), red = cream text + all-cream logo (red bg)
+  const [ink, setInk] = useState<"dark" | "light" | "red">("dark");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -27,7 +30,7 @@ export default function Nav({ active, talkHref }: Props) {
         const r = s.getBoundingClientRect();
         if (r.top <= 40 && r.bottom > 40) cur = s.dataset.theme || "light";
       }
-      setInk(cur === "dark" || cur === "red" ? "light" : "dark");
+      setInk(cur === "red" ? "red" : cur === "dark" ? "light" : "dark");
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -57,8 +60,7 @@ export default function Nav({ active, talkHref }: Props) {
     <>
       <nav className="nav" data-ink={ink}>
         <Link href="/#top" className="nav-logo" aria-label="Poppyns home">
-          <span className="p-mark">p</span>
-          <span className="nav-word">oppyns</span>
+          <Logo priority />
         </Link>
         <div className="nav-links">
           {navLinks.map((l) => (
@@ -68,7 +70,7 @@ export default function Nav({ active, talkHref }: Props) {
           ))}
         </div>
         <a className="nav-cta" href={talkHref}>
-          Let&apos;s talk <span>↗</span>
+          Let&apos;s talk <Icon name="arrow-up-right" />
         </a>
         <button className="nav-burger" onClick={() => setOpen(true)} aria-expanded={open}>
           MENU
@@ -77,7 +79,7 @@ export default function Nav({ active, talkHref }: Props) {
 
       <div className="drawer" data-open={open ? "" : undefined} role="dialog" aria-modal="true" aria-hidden={!open}>
         <button className="drawer-close" onClick={close}>
-          CLOSE ✳
+          CLOSE <Icon name="asterisk" />
         </button>
         <div className="drawer-links">
           {navLinks.map((l) => (
@@ -90,7 +92,7 @@ export default function Nav({ active, talkHref }: Props) {
             onClick={close}
             style={{ fontStyle: "italic", color: active ? undefined : "var(--red)" }}
           >
-            Let&apos;s talk ↗
+            Let&apos;s talk <Icon name="arrow-up-right" />
           </a>
         </div>
         <div className="drawer-mail">{site.email}</div>

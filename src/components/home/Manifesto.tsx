@@ -1,4 +1,5 @@
 import { manifesto } from "@/content/home";
+import Icon from "@/components/shared/Icon";
 
 export default function Manifesto() {
   return (
@@ -12,7 +13,7 @@ export default function Manifesto() {
         <span className="it">{manifesto.lines[1]}</span>
       </h2>
       <span className="manifesto-ast" aria-hidden>
-        ✳
+        <Icon name="asterisk" weight={1.2} />
       </span>
     </section>
   );

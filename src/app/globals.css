@@ -111,6 +111,67 @@ video {
   color: var(--red);
 }
 
+/* ---------- icons (SVG, never emoji) ---------- */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+  overflow: visible;
+}
+/* big spinning asterisks: block-level svg so they rotate on their true centre */
+.manifesto-ast,
+.blog-ast,
+.contact-ast {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.manifesto-ast .icon,
+.blog-ast .icon,
+.contact-ast .icon {
+  display: block;
+}
+
+/* ---------- logo (two stacked colourways, crossfaded) ---------- */
+.logo {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+.logo img {
+  display: block;
+  transition: opacity 0.5s ease;
+}
+.nav-logo .logo {
+  height: 100%;
+}
+.nav-logo .logo img {
+  height: 100%;
+  width: auto;
+}
+.splash-logo .logo,
+.footer-logo .logo,
+.splash-logo .logo img,
+.footer-logo .logo img {
+  width: 100%;
+  height: auto;
+}
+.logo .logo-light,
+.logo .logo-white {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.logo[data-tone="light"] .logo-dark {
+  opacity: 0;
+}
+.logo[data-tone="light"] .logo-light {
+  opacity: 1;
+}
+
 /* ---------- motion primitives ---------- */
 /* Fade-up reveal; distance set per page via --reveal-d */
 [data-reveal] {
@@ -176,40 +237,31 @@ video {
   padding: 20px var(--px);
   --nav-ink: var(--ink);
 }
-.nav[data-ink="light"] {
+.nav[data-ink="light"],
+.nav[data-ink="red"] {
   --nav-ink: var(--paper);
 }
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 7px;
+  height: clamp(38px, 3.6vw, 52px);
+  transition: transform 0.35s var(--ease-out);
 }
-.p-mark {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--red);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 800;
-  font-size: 17px;
-  color: var(--cream);
-  line-height: 1;
-  padding-bottom: 2px;
+.nav-logo:hover {
+  transform: scale(1.04);
 }
-.nav-word {
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: 19px;
-  letter-spacing: -0.02em;
-  color: var(--nav-ink);
-  transition: color 0.3s ease;
+.nav[data-ink="light"] .logo-dark {
+  opacity: 0;
 }
-.nav-logo:hover .nav-word {
-  color: var(--red);
+.nav[data-ink="light"] .logo-light {
+  opacity: 1;
+}
+/* on red sections the red wordmark would vanish: switch to all-cream */
+.nav[data-ink="red"] .logo-dark {
+  opacity: 0;
+}
+.nav[data-ink="red"] .logo-white {
+  opacity: 1;
 }
 .nav-links {
   display: flex;
@@ -229,8 +281,8 @@ video {
   color: var(--nav-ink);
   transition: color 0.3s ease;
 }
-.nav-cta span {
-  font-size: 13px;
+.nav-cta .icon {
+  font-size: 14px;
 }
 .nav-burger {
   display: none;
@@ -322,35 +374,8 @@ video {
 }
 .splash-logo {
   display: flex;
-  align-items: flex-start;
+  width: clamp(240px, 32vw, 442px);
   animation: popLogo 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-.splash-word {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 800;
-  font-size: clamp(48px, 9vw, 120px);
-  color: var(--red);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.splash-ast {
-  font-family: var(--serif);
-  font-weight: 800;
-  font-size: clamp(28px, 5vw, 64px);
-  color: var(--red);
-  display: inline-block;
-  animation: spinAst 3.2s linear infinite;
-  margin-top: 0.1em;
-}
-.splash-sub {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.42em;
-  text-indent: 0.42em;
-  color: var(--ink);
-  transition: color 0.6s ease;
-  animation: popLogo 1s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .splash-foot {
   position: absolute;
@@ -367,8 +392,11 @@ video {
   color: var(--muted);
   transition: color 0.6s ease;
 }
-.splash-ui[data-lit] .splash-sub {
-  color: var(--cream);
+.splash-ui[data-lit] .logo-dark {
+  opacity: 0;
+}
+.splash-ui[data-lit] .logo-light {
+  opacity: 1;
 }
 .splash-ui[data-lit] .splash-foot {
   color: var(--bg);
@@ -427,7 +455,7 @@ video {
 .vidwrap[data-state="docked"] .vid-label {
   opacity: 1;
 }
-.vid-label span {
+.vid-label .icon {
   color: var(--red);
   font-size: 14px;
 }
@@ -468,9 +496,9 @@ video {
   align-items: center;
   gap: 14px;
 }
-.hero-eyebrows .sub span {
+.hero-eyebrows .sub .icon {
   color: var(--red);
-  font-size: 15px;
+  font-size: 14px;
 }
 .hero-title {
   margin: clamp(30px, 6vh, 70px) 0 0;
@@ -530,13 +558,12 @@ video {
   border-bottom: 1px solid currentColor;
   padding-bottom: 6px;
 }
-.hero-cta span {
-  display: inline-block;
-  font-size: 0.7em;
+.hero-cta .icon {
+  font-size: 0.72em;
   color: var(--red);
   transition: transform 0.35s var(--ease-out);
 }
-.hero-cta:hover span {
+.hero-cta:hover .icon {
   transform: translate(4px, -4px);
 }
 .hero-counter {
@@ -574,8 +601,10 @@ video {
   align-items: center;
 }
 .marquee-track .ast {
+  display: inline-flex;
   color: var(--red);
   margin: 0 24px;
+  font-size: 0.72em;
 }
 
 /* ==========================================================================
@@ -776,6 +805,8 @@ video {
   transform: none;
 }
 .svc-list .ast {
+  display: inline-flex;
+  align-self: center;
   color: var(--red);
   font-size: 12px;
 }
@@ -787,9 +818,6 @@ video {
   font-size: clamp(16px, 1.3vw, 20px);
   border-bottom: 1px solid currentColor;
   padding-bottom: 4px;
-}
-.useful-cta span {
-  font-size: 14px;
 }
 
 /* ==========================================================================
@@ -1175,22 +1203,8 @@ textarea.field {
   padding: clamp(60px, 10vh, 120px) var(--px) 40px;
 }
 .footer-logo {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-}
-.footer-logo .p-mark {
-  width: clamp(38px, 4vw, 58px);
-  height: clamp(38px, 4vw, 58px);
-  font-size: clamp(26px, 2.8vw, 40px);
-  padding-bottom: 4px;
-}
-.footer-logo .word {
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: clamp(30px, 3.4vw, 52px);
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  display: inline-flex;
+  width: clamp(220px, 30vw, 442px);
 }
 .footer-links {
   margin-top: clamp(40px, 8vh, 90px);
@@ -1350,6 +1364,7 @@ textarea.field {
   color: var(--bg);
 }
 .work-arrow {
+  display: inline-flex;
   margin-left: auto;
   font-size: 14px;
   transition: transform 0.35s var(--ease-out), color 0.35s ease;
@@ -1416,7 +1431,7 @@ textarea.field {
   gap: clamp(20px, 3vh, 30px);
 }
 .blog-ast {
-  display: inline-block;
+  display: inline-flex;
   font-size: clamp(44px, 5vw, 80px);
   line-height: 1;
   color: var(--red);

@@ -1,4 +1,5 @@
 import { blog } from "@/content/home";
+import Icon, { Glyphs } from "@/components/shared/Icon";
 
 export default function Blog() {
   return (
@@ -12,11 +13,11 @@ export default function Blog() {
         </h2>
         <div className="blog-side">
           <span className="blog-ast" aria-hidden>
-            ✳
+            <Icon name="asterisk" weight={1.3} />
           </span>
           <p data-reveal="">{blog.sub}</p>
           <a data-reveal="" href={blog.cta.href} className="btn-line">
-            {blog.cta.label}
+            <Glyphs text={blog.cta.label} />
           </a>
         </div>
       </div>

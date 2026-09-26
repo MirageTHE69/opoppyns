@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { services } from "@/content/home";
 import { ACCENT } from "@/content/site";
+import Icon from "@/components/shared/Icon";
 
 function Group({
   n,
@@ -61,7 +62,7 @@ function Group({
         <ul className="svc-list">
           {items.map((it, i) => (
             <li key={it} style={{ transitionDelay: open ? `${0.08 + i * 0.05}s` : "0s" }}>
-              <span className="ast">✳</span>
+              <span className="ast"><Icon name="asterisk" /></span>
               {it}
             </li>
           ))}

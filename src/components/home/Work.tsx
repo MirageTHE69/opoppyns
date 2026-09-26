@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { work } from "@/content/home";
+import Icon, { Glyphs } from "@/components/shared/Icon";
 
 export default function Work() {
   return (
@@ -23,7 +24,7 @@ export default function Work() {
             <div className="work-cap mono">
               <span>{String(i + 1).padStart(2, "0")}</span>
               {p.title ? <span className="work-title">{p.title}</span> : null}
-              <span className="work-arrow">↗</span>
+              <span className="work-arrow"><Icon name="arrow-up-right" /></span>
             </div>
           </a>
         ))}
@@ -31,7 +32,7 @@ export default function Work() {
 
       <div className="work-foot">
         <a data-reveal="" href={work.cta.href} className="btn-line">
-          {work.cta.label}
+          <Glyphs text={work.cta.label} />
         </a>
       </div>
     </section>

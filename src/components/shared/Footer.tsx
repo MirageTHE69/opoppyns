@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { site } from "@/content/site";
+import { Glyphs } from "@/components/shared/Icon";
+import Logo from "@/components/shared/Logo";
 
 type Props = {
   links: { label: string; href: string; external?: boolean }[];
@@ -9,23 +11,22 @@ type Props = {
 export default function Footer({ links, compact }: Props) {
   return (
     <footer className={compact ? "footer compact" : "footer"} data-theme="dark">
-      <div className="footer-logo">
-        <span className="p-mark">p</span>
-        <span className="word">oppyns</span>
-      </div>
+      <a href="#top" className="footer-logo" aria-label="Back to top">
+        <Logo tone="light" />
+      </a>
       <div className="footer-links">
         {links.map((l) =>
           l.external ? (
             <a key={l.label} href={l.href} target="_blank" rel="noopener">
-              {l.label}
+              <Glyphs text={l.label} />
             </a>
           ) : l.href.startsWith("/") ? (
             <Link key={l.label} href={l.href}>
-              {l.label}
+              <Glyphs text={l.label} />
             </Link>
           ) : (
             <a key={l.label} href={l.href}>
-              {l.label}
+              <Glyphs text={l.label} />
             </a>
           )
         )}

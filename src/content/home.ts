@@ -1,8 +1,6 @@
 // All copy for the home page. Edit here; components read from this file.
 
 export const splash = {
-  wordmark: "poppyns",
-  sub: "COMMUNICATIONS",
   footLeft: "MAKING BRANDS LESS BORING SINCE 2026",
   videoSrc:
     "https://ik.imagekit.io/5feqwwaxb/MARCA%20WEBSITE%2001.mp4?updatedAt=1789718697258",

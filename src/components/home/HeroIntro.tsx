@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { hero, splash } from "@/content/home";
+import Icon from "@/components/shared/Icon";
+import Logo from "@/components/shared/Logo";
 
 // The intro plays once per full page load, not on every client-side return to "/".
 let splashPlayed = false;
@@ -179,10 +181,8 @@ export default function HeroIntro({ showSplash = true }: { showSplash?: boolean 
           <div ref={shellRef} className="splash-shell" />
           <div ref={uiRef} className="splash-ui" aria-hidden>
             <div className="splash-logo">
-              <span className="splash-word">{splash.wordmark}</span>
-              <span className="splash-ast">*</span>
+              <Logo priority />
             </div>
-            <div className="splash-sub">{splash.sub}</div>
             <div className="splash-foot">
               <span>{splash.footLeft}</span>
               <span ref={countRef}>000</span>
@@ -195,7 +195,7 @@ export default function HeroIntro({ showSplash = true }: { showSplash?: boolean 
         <div className="hero-blob" />
         <div className="hero-eyebrows mono">
           <div data-reveal="" className="sub">
-            {hero.eyebrow} <span>✳</span>
+            {hero.eyebrow} <Icon name="asterisk" />
           </div>
         </div>
 
@@ -230,7 +230,7 @@ export default function HeroIntro({ showSplash = true }: { showSplash?: boolean 
               />
               <div className="vid-vignette" />
               <div className="vid-label">
-                <span>✳</span> {splash.videoLabel}
+                <Icon name="asterisk" /> {splash.videoLabel}
               </div>
             </div>
           </div>
@@ -241,7 +241,7 @@ export default function HeroIntro({ showSplash = true }: { showSplash?: boolean 
 
         <div className="hero-foot">
           <a data-reveal="" href={hero.cta.href} className="hero-cta">
-            {hero.cta.label} <span>↗</span>
+            {hero.cta.label} <Icon name="arrow-up-right" />
           </a>
           <div className="hero-counter" data-counter="">
             01&nbsp;/&nbsp;09

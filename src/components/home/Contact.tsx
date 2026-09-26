@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { contact } from "@/content/home";
 import { site } from "@/content/site";
+import Icon, { Glyphs } from "@/components/shared/Icon";
 
 type Answers = Record<string, string | string[]>;
 
@@ -93,13 +94,13 @@ export default function Contact() {
             onClick={() => setOpen(true)}
             aria-expanded={open}
           >
-            {contact.button} <span>↗</span>
+            {contact.button} <Icon name="arrow-up-right" />
           </button>
         </div>
 
         {!open ? (
           <button className="contact-ast" onClick={() => setOpen(true)} aria-label={contact.button}>
-            ✳
+            <Icon name="asterisk" weight={1.1} />
           </button>
         ) : (
         <div className="form form-enter">
@@ -112,7 +113,7 @@ export default function Contact() {
               data-on={idx > 0 && !done ? "" : undefined}
               onClick={() => go(idx - 1, -1)}
             >
-              ← BACK
+              <Icon name="arrow-left" /> BACK
             </button>
           </div>
           <div className="form-prog">
@@ -134,7 +135,7 @@ export default function Contact() {
                 </div>
                 <p>{contact.done.body}</p>
                 <a className="form-mail" href={mailHref}>
-                  {contact.done.mail}
+                  <Glyphs text={contact.done.mail} />
                 </a>
               </div>
             ) : (
@@ -165,7 +166,7 @@ export default function Contact() {
 
                 {step.mode === "multi" && (
                   <button className="pill" onClick={() => go(idx + 1, 1)}>
-                    {contact.continue}
+                    <Glyphs text={contact.continue} />
                   </button>
                 )}
 
@@ -198,7 +199,7 @@ export default function Contact() {
                       {contact.error}
                     </div>
                     <button className="pill send" onClick={send}>
-                      {contact.send}
+                      <Glyphs text={contact.send} />
                     </button>
                   </>
                 )}

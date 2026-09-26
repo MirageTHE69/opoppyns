@@ -1,3 +1,5 @@
+import Icon from "@/components/shared/Icon";
+
 type Props = {
   words: string[];
   /** smaller variant used on the Capabilities page */
@@ -10,7 +12,7 @@ export default function Marquee({ words, small }: Props) {
     <span aria-hidden={hidden || undefined}>
       {words.map((w) => (
         <span key={w} style={{ display: "contents" }}>
-          {w} <span className="ast">✳</span>{" "}
+          {w} <span className="ast"><Icon name="asterisk" /></span>{" "}
         </span>
       ))}
     </span>

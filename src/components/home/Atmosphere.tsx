@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { atmosphere } from "@/content/home";
+import { Glyphs } from "@/components/shared/Icon";
 
 type Blob = { x: number; y: number; r: number; c: string };
 
@@ -66,7 +67,7 @@ export default function Atmosphere() {
       </div>
       <div className="atmos-foot">
         <button className="atmos-clear" onClick={clear}>
-          {atmosphere.clear}
+          <Glyphs text={atmosphere.clear} />
         </button>
       </div>
     </section>
