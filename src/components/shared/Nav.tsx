@@ -20,6 +20,9 @@ type Props = {
 export default function Nav({ active, talkHref }: Props) {
   // dark = charcoal text (light bg), light = cream text (dark bg), red = cream text + all-cream logo (red bg)
   const [ink, setInk] = useState<"dark" | "light" | "red">("dark");
+  // section theme under the nav, used to tint the bar once scrolled
+  const [bg, setBg] = useState("light");
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -31,6 +34,8 @@ export default function Nav({ active, talkHref }: Props) {
         if (r.top <= 40 && r.bottom > 40) cur = s.dataset.theme || "light";
       }
       setInk(cur === "red" ? "red" : cur === "dark" ? "light" : "dark");
+      setBg(cur);
+      setScrolled(window.scrollY > 80);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -58,7 +63,7 @@ export default function Nav({ active, talkHref }: Props) {
 
   return (
     <>
-      <nav className="nav" data-ink={ink}>
+      <nav className="nav" data-ink={ink} data-bg={bg} data-scrolled={scrolled ? "" : undefined}>
         <Link href="/#top" className="nav-logo" aria-label="Poppyns home">
           <Logo priority />
         </Link>

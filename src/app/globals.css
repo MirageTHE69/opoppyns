@@ -241,11 +241,38 @@ video {
 .nav[data-ink="red"] {
   --nav-ink: var(--paper);
 }
+/* Once scrolled, the bar takes the colour of the section beneath it so the
+   logo and links never sit on top of headline text. */
+.nav {
+  transition: background-color 0.4s ease, padding 0.35s var(--ease-out), box-shadow 0.4s ease;
+}
+.nav[data-scrolled] {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  background-color: rgba(239, 235, 228, 0.88);
+  box-shadow: 0 1px 0 rgba(26, 26, 24, 0.08);
+}
+.nav[data-scrolled][data-bg="dark"] {
+  background-color: rgba(20, 20, 18, 0.88);
+  box-shadow: 0 1px 0 rgba(239, 235, 228, 0.08);
+}
+.nav[data-scrolled][data-bg="red"] {
+  background-color: rgba(215, 25, 31, 0.92);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.nav[data-scrolled][data-bg="yellow"] {
+  background-color: rgba(227, 176, 35, 0.92);
+}
+.nav[data-scrolled] .nav-logo {
+  height: clamp(36px, 3.2vw, 48px);
+}
 .nav-logo {
   display: flex;
   align-items: center;
-  height: clamp(38px, 3.6vw, 52px);
-  transition: transform 0.35s var(--ease-out);
+  height: clamp(42px, 4vw, 60px);
+  transition: transform 0.35s var(--ease-out), height 0.35s var(--ease-out);
 }
 .nav-logo:hover {
   transform: scale(1.04);
@@ -374,7 +401,7 @@ video {
 }
 .splash-logo {
   display: flex;
-  width: clamp(240px, 32vw, 442px);
+  width: clamp(260px, 44vw, 640px);
   animation: popLogo 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .splash-foot {
@@ -1204,7 +1231,7 @@ textarea.field {
 }
 .footer-logo {
   display: inline-flex;
-  width: clamp(220px, 30vw, 442px);
+  width: clamp(240px, 42vw, 620px);
 }
 .footer-links {
   margin-top: clamp(40px, 8vh, 90px);

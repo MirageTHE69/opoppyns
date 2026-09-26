@@ -8,40 +8,33 @@ type Props = {
   priority?: boolean;
 };
 
+// Vector artwork (public/logo*.svg), cropped to the wordmark.
+const W = 395;
+const H = 164;
+
 /**
- * Poppyns wordmark. Both colour versions are stacked so the logo can
+ * Poppyns wordmark. All colour versions are stacked so the logo can
  * crossfade between them when the background behind it changes.
  * Size it by setting `height` (or `width`) on the wrapper.
  */
 export default function Logo({ tone, className, priority }: Props) {
+  const variant = (cls: string, src: string, alt: string) => (
+    <Image
+      className={cls}
+      src={src}
+      alt={alt}
+      aria-hidden={alt ? undefined : true}
+      width={W}
+      height={H}
+      priority={priority}
+      unoptimized
+    />
+  );
   return (
     <span className={className ? `logo ${className}` : "logo"} data-tone={tone}>
-      <Image
-        className="logo-dark"
-        src="/logo.png"
-        alt="Poppyns Communications"
-        width={442}
-        height={149}
-        priority={priority}
-      />
-      <Image
-        className="logo-light"
-        src="/logo-light.png"
-        alt=""
-        aria-hidden
-        width={442}
-        height={149}
-        priority={priority}
-      />
-      <Image
-        className="logo-white"
-        src="/logo-white.png"
-        alt=""
-        aria-hidden
-        width={442}
-        height={149}
-        priority={priority}
-      />
+      {variant("logo-dark", "/logo.svg", "Poppyns Communications")}
+      {variant("logo-light", "/logo-light.svg", "")}
+      {variant("logo-white", "/logo-white.svg", "")}
     </span>
   );
 }
