@@ -8,9 +8,14 @@ import { Fragment } from "react";
 
 export type IconName = "asterisk" | "arrow-up-right" | "arrow-right" | "arrow-left" | "arrow-up" | "arrow-down";
 
-const paths: Record<IconName, string> = {
-  // eight-spoked asterisk
-  asterisk: "M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93 4.93 19.07",
+// The brand asterisk: the exact five-armed shape from the Poppyns logo
+// (public/new-logo.svg). Solid, not stroked. Its viewBox is centred on the
+// hub so it spins evenly.
+const ASTERISK_PATH =
+  "M19.203-36.922 14.016-26.656 5.578-32.844 13.656-40.719 13.406-41.531 2.203-43.203 5.469-53.266 15.453-47.969 16.141-48.422 14.219-59.578H24.828L22.953-48.422 23.594-47.969 33.625-53.188 36.891-43.156 25.766-41.531 25.516-40.719 33.453-32.844 24.984-26.609 19.938-36.922Z";
+const ASTERISK_VIEWBOX = "1.35 -60.1 36.4 36.4";
+
+const paths: Record<Exclude<IconName, "asterisk">, string> = {
   "arrow-up-right": "M7 17 17 7M8 7h9v9",
   "arrow-right": "M4 12h16M14 6l6 6-6 6",
   "arrow-left": "M20 12H4M10 6l-6 6 6 6",
@@ -20,16 +25,32 @@ const paths: Record<IconName, string> = {
 
 type Props = {
   name: IconName;
-  /** stroke width in 24-unit viewBox space; thinner reads better at large sizes */
+  /** stroke width for the arrow icons, in 24-unit viewBox space (the asterisk is a solid shape and ignores it) */
   weight?: number;
   className?: string;
 };
 
 export default function Icon({ name, weight, className }: Props) {
-  const w = weight ?? (name === "asterisk" ? 1.6 : 1.8);
+  const cls = className ? `icon ${className}` : "icon";
+  if (name === "asterisk") {
+    return (
+      <svg
+        className={cls}
+        viewBox={ASTERISK_VIEWBOX}
+        width="1em"
+        height="1em"
+        fill="currentColor"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d={ASTERISK_PATH} />
+      </svg>
+    );
+  }
+  const w = weight ?? 1.8;
   return (
     <svg
-      className={className ? `icon ${className}` : "icon"}
+      className={cls}
       viewBox="0 0 24 24"
       width="1em"
       height="1em"
