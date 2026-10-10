@@ -48,42 +48,7 @@ export const atmosphere = {
 
 export const services = {
   label: "03 — SERVICES",
-  groups: [
-    {
-      title: "Strategy",
-      items: [
-        "Brand Strategy",
-        "Positioning",
-        "Market & Audience Research",
-        "Communication Strategy",
-        "Creative Strategy",
-      ],
-    },
-    {
-      title: "Digital",
-      items: [
-        "Social Media",
-        "Content",
-        "Performance Marketing",
-        "Influencer & Creator Marketing",
-        "Websites & Digital Experiences",
-      ],
-    },
-    {
-      title: "Production",
-      items: ["Art Direction", "Photography", "Videography", "Graphic Design", "Motion & Animation"],
-    },
-    {
-      title: "Campaigns",
-      items: [
-        "Campaign Strategy",
-        "Creative Concepts",
-        "Product & Brand Launches",
-        "Integrated Campaigns",
-        "Experiential & Activations",
-      ],
-    },
-  ],
+  // The service groups themselves live in content/services.ts
 };
 
 export const quote = {
@@ -125,7 +90,7 @@ export const blog = {
   label: "07 — BLOG",
   title: ["Things we're", "thinking about."],
   sub: "Ideas, observations and the occasional thought we couldn't keep to ourselves.",
-  cta: { label: "Read more →", href: "#blog" },
+  cta: { label: "Read more →", href: "/blog" },
 };
 
 export type FormStep = {

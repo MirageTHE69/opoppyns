@@ -3,10 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { services } from "@/content/home";
 import { ACCENT } from "@/content/site";
+import Link from "next/link";
 import Icon from "@/components/shared/Icon";
+import { serviceList, servicePage } from "@/content/services";
 
 function Group({
   n,
+  slug,
   title,
   items,
   open,
@@ -14,6 +17,7 @@ function Group({
   onToggle,
 }: {
   n: number;
+  slug: string;
   title: string;
   items: string[];
   open: boolean;
@@ -67,6 +71,9 @@ function Group({
             </li>
           ))}
         </ul>
+        <Link href={`/services/${slug}`} className="svc-more" tabIndex={open ? 0 : -1}>
+          {servicePage.explore} {title} <Icon name="arrow-up-right" />
+        </Link>
       </div>
     </div>
   );
@@ -82,12 +89,13 @@ export default function Services() {
         {services.label}
       </div>
       <div className="acc">
-        {services.groups.map((g, i) => (
+        {serviceList.map((g, i) => (
           <Group
-            key={g.title}
+            key={g.slug}
+            slug={g.slug}
             n={i + 1}
             title={g.title}
-            items={g.items}
+            items={g.items.map((it) => it.name)}
             open={openIdx === i}
             touched={touched}
             onToggle={() => {

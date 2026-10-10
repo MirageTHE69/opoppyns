@@ -16,9 +16,10 @@ const inter = Inter({
   display: "swap",
 });
 
+// Loaded as a variable font: requesting fixed weights ("400", "500") fails to
+// resolve under Turbopack in this Next.js version.
 const mono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });

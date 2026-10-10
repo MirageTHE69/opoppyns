@@ -1,5 +1,8 @@
 import { blog } from "@/content/home";
+import Link from "next/link";
 import Icon, { Glyphs } from "@/components/shared/Icon";
+import PostCard from "@/components/shared/PostCard";
+import { posts } from "@/content/blog";
 
 export default function Blog() {
   return (
@@ -16,10 +19,15 @@ export default function Blog() {
             <Icon name="asterisk" weight={1.3} />
           </span>
           <p data-reveal="">{blog.sub}</p>
-          <a data-reveal="" href={blog.cta.href} className="btn-line">
+          <Link data-reveal="" href={blog.cta.href} className="btn-line">
             <Glyphs text={blog.cta.label} />
-          </a>
+          </Link>
         </div>
+      </div>
+      <div className="blog-posts">
+        {posts.slice(0, 2).map((p) => (
+          <PostCard key={p.slug} post={p} />
+        ))}
       </div>
     </section>
   );
