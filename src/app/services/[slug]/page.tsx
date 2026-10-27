@@ -3,29 +3,34 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageShell from "@/components/shared/PageShell";
 import Icon, { Glyphs } from "@/components/shared/Icon";
-import { getService, serviceList, servicePage } from "@/content/services";
+import { servicePage } from "@/content/services";
+import { getService, getServices } from "@/lib/data";
 
 type Params = { params: Promise<{ slug: string }> };
 
-// Only the services listed in content/services.ts exist.
-export const dynamicParams = false;
-export const generateStaticParams = () => serviceList.map((s) => ({ slug: s.slug }));
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+export const generateStaticParams = async () => {
+  const services = await getServices();
+  return services.map((s) => ({ slug: s.slug }));
+};
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const service = getService(slug);
+  const service = await getService(slug);
   if (!service) return {};
   return { title: `${service.title} — Poppyns Communications`, description: service.intro };
 }
 
 export default async function ServicePage({ params }: Params) {
   const { slug } = await params;
-  const service = getService(slug);
+  const service = await getService(slug);
   if (!service) notFound();
 
-  const index = serviceList.indexOf(service);
-  const num = String(index + 1).padStart(2, "0");
-  const others = serviceList.filter((s) => s.slug !== service.slug);
+  const services = await getServices();
+  const index = services.findIndex((s) => s.slug === service.slug);
+  const num = String((index >= 0 ? index : 0) + 1).padStart(2, "0");
+  const others = services.filter((s) => s.slug !== service.slug);
 
   return (
     <PageShell active="services">
@@ -90,7 +95,7 @@ export default async function ServicePage({ params }: Params) {
         <div className="sv-others-list">
           {others.map((o) => (
             <Link key={o.slug} href={`/services/${o.slug}`} data-reveal="">
-              <span className="n">{String(serviceList.indexOf(o) + 1).padStart(2, "0")}</span>
+              <span className="n">{String(services.indexOf(o) + 1).padStart(2, "0")}</span>
               <span className="t">{o.title}</span>
               <span className="tag">{o.tagline}</span>
               <Icon name="arrow-up-right" />

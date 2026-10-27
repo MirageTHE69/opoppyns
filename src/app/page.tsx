@@ -14,13 +14,19 @@ import Contact from "@/components/home/Contact";
 import { values } from "@/content/home";
 import { site } from "@/content/site";
 
+import { getSiteData } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
+
 // Motion intensity: the design ships on "heavy".
 //   subtle = reveal .5 / fx .5 / merge .6
 //   noticeable = 1 / 1 / 1
 //   heavy = 1.8 / 1.7 / 1.6
 const MOTION = { reveal: 1.8, fx: 1.7, merge: 1.6 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const data = await getSiteData();
+
   return (
     <div
       className="root"
@@ -37,17 +43,18 @@ export default function HomePage() {
       <Manifesto />
       <Marquee words={values} />
       <Atmosphere />
-      <Services />
+      <Services services={data.services} />
       <Quote k={MOTION.merge} />
       <HowWeThink />
-      <Work />
-      <Blog />
+      <Work projects={data.portfolio} />
+      <Blog posts={data.posts} />
       <Contact />
       <Footer
         links={[
           { label: "Back to top ↑", href: "#top" },
-          { label: `${site.email} ↗`, href: `mailto:${site.email}` },
-          { label: "Instagram ↗", href: site.instagram, external: true },
+          { label: `${data.settings.email || site.email} ↗`, href: `mailto:${data.settings.email || site.email}` },
+          { label: "Instagram ↗", href: data.settings.instagram || site.instagram, external: true },
+          { label: "Admin Panel ↗", href: "/admin" },
         ]}
       />
     </div>

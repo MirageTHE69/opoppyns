@@ -4,7 +4,9 @@ import Icon, { Glyphs } from "@/components/shared/Icon";
 import PostCard from "@/components/shared/PostCard";
 import { posts } from "@/content/blog";
 
-export default function Blog() {
+export default function Blog({ posts: dynamicPosts }: { posts?: typeof posts } = {}) {
+  const displayPosts = dynamicPosts && dynamicPosts.length > 0 ? dynamicPosts : posts;
+
   return (
     <section id="blog" className="blog" data-theme="light" data-num="08">
       <div className="mono">{blog.label}</div>
@@ -25,7 +27,7 @@ export default function Blog() {
         </div>
       </div>
       <div className="blog-posts">
-        {posts.slice(0, 2).map((p) => (
+        {displayPosts.slice(0, 2).map((p) => (
           <PostCard key={p.slug} post={p} />
         ))}
       </div>

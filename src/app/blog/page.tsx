@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/shared/PageShell";
 import PostCard from "@/components/shared/PostCard";
-import { blogPage, posts } from "@/content/blog";
+import { blogPage } from "@/content/blog";
+import { getPosts } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Blog — Poppyns Communications",
   description: blogPage.sub,
 };
 
-export default function BlogIndexPage() {
+export default async function BlogIndexPage() {
+  const posts = await getPosts();
   const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
   return (
     <PageShell active="blog">

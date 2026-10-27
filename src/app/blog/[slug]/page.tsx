@@ -5,17 +5,21 @@ import { notFound } from "next/navigation";
 import PageShell from "@/components/shared/PageShell";
 import PostCard from "@/components/shared/PostCard";
 import Icon, { Glyphs } from "@/components/shared/Icon";
-import { blogPage, formatDate, getPost, posts, type Block } from "@/content/blog";
+import { blogPage, formatDate, type Block } from "@/content/blog";
+import { getPost, getPosts } from "@/lib/data";
 
 type Params = { params: Promise<{ slug: string }> };
 
-// Only the posts listed in content/blog.ts exist.
-export const dynamicParams = false;
-export const generateStaticParams = () => posts.map((p) => ({ slug: p.slug }));
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+export const generateStaticParams = async () => {
+  const posts = await getPosts();
+  return posts.map((p) => ({ slug: p.slug }));
+};
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) return {};
   return { title: `${post.title} — Poppyns Communications`, description: post.excerpt };
 }
@@ -49,11 +53,12 @@ function renderBlock(b: Block, i: number) {
 
 export default async function BlogPostPage({ params }: Params) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) notFound();
 
-  const idx = posts.indexOf(post);
-  const next = posts.length > 1 ? posts[(idx + 1) % posts.length] : null;
+  const allPosts = await getPosts();
+  const idx = allPosts.findIndex((p) => p.slug === post.slug);
+  const next = allPosts.length > 1 ? allPosts[(idx + 1) % allPosts.length] : null;
 
   return (
     <PageShell active="blog">

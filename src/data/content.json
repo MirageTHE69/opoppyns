@@ -1,0 +1,351 @@
+{
+  "posts": [
+    {
+      "slug": "why-your-brand-sounds-like-everyone-else",
+      "title": "Why your brand sounds like everyone else",
+      "category": "Brands",
+      "date": "2026-09-18",
+      "readTime": "4 min read",
+      "excerpt": "Open five websites in your category. Cover the logos. If you can't tell which one is yours, your customers can't either.",
+      "cover": {
+        "src": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1800&q=80&auto=format",
+        "alt": "An empty studio room with glass partitions"
+      },
+      "body": [
+        {
+          "type": "p",
+          "text": "Try a small experiment. Open five websites from your category, cover the logos and read the first line of each one out loud. Passionate. Innovative. Customer-first. Trusted by thousands. If you can't tell which one is yours, your customers can't either."
+        },
+        {
+          "type": "p",
+          "text": "This isn't laziness. It's what happens when sensible people make sensible decisions, one at a time, until nothing interesting is left."
+        },
+        {
+          "type": "h2",
+          "text": "Sameness is the safe choice"
+        },
+        {
+          "type": "p",
+          "text": "Every category has a way it's supposed to sound. Banks sound reassuring. Skincare sounds scientific. Tech sounds like it was written by the product itself. Borrowing that voice feels low-risk, because nobody ever got fired for sounding like the market leader."
+        },
+        {
+          "type": "p",
+          "text": "But the market leader can afford to be forgettable. They have the budget to be everywhere. You don't, which means every line you publish has to work harder than theirs."
+        },
+        {
+          "type": "quote",
+          "text": "If a competitor could sign their name under your sentence, it isn't your sentence yet."
+        },
+        {
+          "type": "h2",
+          "text": "Three ways to find your own voice"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Write down what you'd never say. A brand is easier to hear once you know what it refuses to sound like.",
+            "Listen to how your best customers describe you. Their words are usually plainer, funnier and more specific than yours.",
+            "Pick an opinion. Not a controversy, just a clear view on how things should be done in your category."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "None of this needs a rebrand. It needs a decision, and then the discipline to keep making the same decision in every caption, email and headline for a year."
+        },
+        {
+          "type": "h2",
+          "text": "The test"
+        },
+        {
+          "type": "p",
+          "text": "Before anything goes out, cover the logo. If the line could belong to anyone, send it back. It's a slightly annoying habit, and it's the cheapest piece of brand strategy you'll ever run."
+        }
+      ]
+    },
+    {
+      "slug": "the-brief-is-not-the-idea",
+      "title": "The brief is not the idea",
+      "category": "Craft",
+      "date": "2026-08-27",
+      "readTime": "3 min read",
+      "excerpt": "A good brief points at a problem. A bad one hides a solution inside it and hopes nobody notices.",
+      "cover": {
+        "src": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1800&q=80&auto=format",
+        "alt": "A team working together around a table"
+      },
+      "body": [
+        {
+          "type": "p",
+          "text": "Most briefs we receive already contain an answer. \"We need a film.\" \"We want to go viral.\" \"Something like that campaign from last year, but for us.\" It's understandable. A solution feels more useful than a question."
+        },
+        {
+          "type": "p",
+          "text": "The trouble is that a brief with the answer baked in can only ever produce that answer. And the first answer is rarely the interesting one."
+        },
+        {
+          "type": "h2",
+          "text": "What a brief is for"
+        },
+        {
+          "type": "p",
+          "text": "A brief has one job: to describe a problem so clearly that a good idea becomes possible. Who are we talking to? What do they think now? What do we want them to think instead? What's stopping them?"
+        },
+        {
+          "type": "p",
+          "text": "Four questions. If a brief answers them honestly, it can be half a page long. If it doesn't, forty slides won't save it."
+        },
+        {
+          "type": "quote",
+          "text": "Fall in love with the problem. The idea will turn up when it's ready."
+        },
+        {
+          "type": "h2",
+          "text": "Leave room for surprise"
+        },
+        {
+          "type": "p",
+          "text": "The best work we've been part of started with a brief that was specific about the problem and relaxed about the format. A film brief that became a poster. A launch that became a letter. A campaign that turned out to be a change to the packaging."
+        },
+        {
+          "type": "p",
+          "text": "None of that happens if the deliverable is decided before the thinking starts."
+        },
+        {
+          "type": "h2",
+          "text": "So, the next time you write one"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Describe the problem in one sentence a friend outside the company would understand.",
+            "Say what success looks like in behaviour, not in views.",
+            "Delete the line that begins with \"we were thinking maybe\"."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Then hand it over and let people surprise you. That's what you're paying them for."
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "slug": "strategy",
+      "title": "Strategy",
+      "tagline": "Know what you're saying before you say it.",
+      "intro": "Most brands don't have a communication problem. They have a clarity problem. We find the one thing worth saying, who needs to hear it, and why they'd care.",
+      "items": [
+        {
+          "name": "Brand Strategy",
+          "body": "What you stand for, who it's for and why it matters, written so a new hire could explain it."
+        },
+        {
+          "name": "Positioning",
+          "body": "The space you can own in someone's head, and the spaces you should politely leave to others."
+        },
+        {
+          "name": "Market & Audience Research",
+          "body": "Real conversations, real behaviour and the patterns hiding in both."
+        },
+        {
+          "name": "Communication Strategy",
+          "body": "What to say, where to say it and in what order, so the message builds instead of repeating."
+        },
+        {
+          "name": "Creative Strategy",
+          "body": "The sharp, usable thought that turns a business goal into a brief worth answering."
+        }
+      ],
+      "steps": [
+        {
+          "title": "Listen",
+          "body": "Interviews, audits and a lot of reading. We look for what people actually say, not what the deck says."
+        },
+        {
+          "title": "Sharpen",
+          "body": "We cut until one idea is left standing. If it can't fit on a sticky note, it isn't ready."
+        },
+        {
+          "title": "Hand over",
+          "body": "A strategy people reopen: short, plain and specific enough to make decisions with."
+        }
+      ]
+    },
+    {
+      "slug": "digital",
+      "title": "Digital",
+      "tagline": "Show up where people already are.",
+      "intro": "The internet is not a channel, it's where your audience lives. We build a presence that feels native to each corner of it and still sounds like one brand.",
+      "items": [
+        {
+          "name": "Social Media",
+          "body": "Platform-native ideas, a clear voice and a calendar that leaves room for the unplanned."
+        },
+        {
+          "name": "Content",
+          "body": "Formats people return to, built on a few strong pillars instead of a hundred loose posts."
+        },
+        {
+          "name": "Performance Marketing",
+          "body": "Paid media that starts with good creative, then earns its budget with numbers."
+        },
+        {
+          "name": "Influencer & Creator Marketing",
+          "body": "The right voices, briefed properly and trusted to sound like themselves."
+        },
+        {
+          "name": "Websites & Digital Experiences",
+          "body": "Sites that load fast, read well and make the next step obvious."
+        }
+      ],
+      "steps": [
+        {
+          "title": "Map",
+          "body": "Where your audience spends time, what they do there and what they ignore."
+        },
+        {
+          "title": "Make",
+          "body": "Content and experiences designed for each place, not resized from one master file."
+        },
+        {
+          "title": "Measure",
+          "body": "A monthly read on what worked, what didn't and what we're changing because of it."
+        }
+      ]
+    },
+    {
+      "slug": "production",
+      "title": "Production",
+      "tagline": "Ideas are cheap. Craft is not.",
+      "intro": "A good idea badly made is a bad idea. Our production team carries the thought all the way through, from the first frame to the final export.",
+      "items": [
+        {
+          "name": "Art Direction",
+          "body": "A visual point of view that holds together across every shoot, post and page."
+        },
+        {
+          "name": "Photography",
+          "body": "Product, people and places, shot to feel like your brand and nobody else's."
+        },
+        {
+          "name": "Videography",
+          "body": "Films, reels and everything in between, planned for the screen they'll live on."
+        },
+        {
+          "name": "Graphic Design",
+          "body": "Identity, layouts and systems that stay consistent without becoming boring."
+        },
+        {
+          "name": "Motion & Animation",
+          "body": "Movement with a reason: to explain, to delight, or to make someone look twice."
+        }
+      ],
+      "steps": [
+        {
+          "title": "Plan",
+          "body": "Treatments, shot lists and references, agreed before anyone picks up a camera."
+        },
+        {
+          "title": "Shoot",
+          "body": "Small, focused crews who know the idea as well as the strategist does."
+        },
+        {
+          "title": "Finish",
+          "body": "Edit, grade, sound and design, delivered in every format you'll actually need."
+        }
+      ]
+    },
+    {
+      "slug": "campaigns",
+      "title": "Campaigns",
+      "tagline": "One idea, everywhere it needs to be.",
+      "intro": "A campaign is a single thought with the stamina to travel. We build the idea first, then work out everywhere it deserves to show up.",
+      "items": [
+        {
+          "name": "Campaign Strategy",
+          "body": "The problem, the audience and the one thing this campaign needs to change."
+        },
+        {
+          "name": "Creative Concepts",
+          "body": "Routes with a real point of view, so choosing between them is an actual decision."
+        },
+        {
+          "name": "Product & Brand Launches",
+          "body": "The build-up, the moment and what happens the week after everyone stops talking."
+        },
+        {
+          "name": "Integrated Campaigns",
+          "body": "Film, social, outdoor and digital working as one story rather than four."
+        },
+        {
+          "name": "Experiential & Activations",
+          "body": "Things people can walk into, touch and tell their friends about."
+        }
+      ],
+      "steps": [
+        {
+          "title": "Find it",
+          "body": "Three routes, each strong enough to stand alone. We recommend one and say why."
+        },
+        {
+          "title": "Build it",
+          "body": "Every asset made properly, in the format that belongs on each platform."
+        },
+        {
+          "title": "Land it",
+          "body": "Launch, watch closely and adjust while it still matters."
+        }
+      ]
+    }
+  ],
+  "portfolio": [
+    {
+      "id": "proj-1",
+      "src": "https://images.unsplash.com/photo-1558655146-d09347e92766?w=1400&q=80&auto=format",
+      "alt": "Studio work in progress",
+      "title": "Brand Identity & Spatial",
+      "category": "Branding",
+      "year": "2026",
+      "link": "#work"
+    },
+    {
+      "id": "proj-2",
+      "src": "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=1000&q=80&auto=format",
+      "alt": "Campaign moodboard",
+      "title": "Global Campaign Strategy",
+      "category": "Campaigns",
+      "year": "2026",
+      "link": "#work"
+    },
+    {
+      "id": "proj-3",
+      "src": "https://images.unsplash.com/photo-1452802447250-470a88ac82bc?w=1000&q=80&auto=format",
+      "alt": "Photography set",
+      "title": "Editorial Lookbook & Film",
+      "category": "Production",
+      "year": "2026",
+      "link": "#work"
+    },
+    {
+      "id": "proj-4",
+      "src": "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=1400&q=80&auto=format",
+      "alt": "Design sketches",
+      "title": "Digital Platform Experience",
+      "category": "Digital",
+      "year": "2026",
+      "link": "#work"
+    }
+  ],
+  "settings": {
+    "siteName": "Poppyns Communications",
+    "tagline": "Communications for the curious.",
+    "email": "hello@poppyns.com",
+    "instagram": "https://instagram.com",
+    "heroEyebrow": "POPPYNS COMMUNICATIONS",
+    "heroHeadline1": "Make them",
+    "heroHeadline2": "look twice",
+    "heroLede": "Strategy, creativity and communication for brands with somewhere to go.",
+    "adminPassword": "admin123"
+  }
+}

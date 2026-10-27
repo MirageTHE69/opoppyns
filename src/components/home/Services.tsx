@@ -79,9 +79,10 @@ function Group({
   );
 }
 
-export default function Services() {
+export default function Services({ services: customServices }: { services?: typeof serviceList } = {}) {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
   const [touched, setTouched] = useState(false);
+  const list = customServices && customServices.length > 0 ? customServices : serviceList;
 
   return (
     <section id="services" className="useful" data-theme="light" data-num="04">
@@ -89,7 +90,7 @@ export default function Services() {
         {services.label}
       </div>
       <div className="acc">
-        {serviceList.map((g, i) => (
+        {list.map((g, i) => (
           <Group
             key={g.slug}
             slug={g.slug}
