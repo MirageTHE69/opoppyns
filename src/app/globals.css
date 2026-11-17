@@ -476,11 +476,17 @@ video {
   bottom: clamp(12px, 2vh, 20px);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.14em;
   color: var(--cream);
+  /* dark backing so the label reads on light video frames too */
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(20, 20, 18, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   opacity: 0;
   transition: opacity 0.7s ease;
 }

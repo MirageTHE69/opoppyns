@@ -3,7 +3,7 @@
 export const splash = {
   footLeft: "MAKING BRANDS LESS BORING SINCE 2026",
   videoSrc:
-    "https://ik.imagekit.io/5feqwwaxb/MARCA%20WEBSITE%2001.mp4?updatedAt=1789718697258",
+    "https://ik.imagekit.io/omgojp17s/Poppyns%20website%20video%20R2.mp4",
   videoLabel: "SHOWREEL 2026 / MUTED / ON LOOP",
 };
 

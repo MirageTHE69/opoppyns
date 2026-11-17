@@ -1,44 +1,83 @@
 import { NextResponse } from "next/server";
-import { getSiteSettings, saveSiteData } from "@/lib/data";
+import { saveSiteData } from "@/lib/data";
+import {
+  SESSION_COOKIE,
+  canChangePasswordInPanel,
+  createSessionToken,
+  getAdminPassword,
+  isAuthenticated,
+  safeEqual,
+  sessionCookieOptions,
+} from "@/lib/auth";
+import { StorageUnavailableError } from "@/lib/storage";
+
+/** Session status, so the admin page knows whether to show the login screen. */
+export async function GET(req: Request) {
+  const password = await getAdminPassword();
+  return NextResponse.json({
+    authenticated: await isAuthenticated(req),
+    loginEnabled: Boolean(password),
+    canChangePassword: canChangePasswordInPanel(),
+  });
+}
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const settings = await getSiteSettings();
-    const correctPassword = settings.adminPassword || "admin123";
-
-    if (body.action === "changePassword") {
-      const { oldPassword, newPassword } = body;
-      if (oldPassword !== correctPassword) {
-        return NextResponse.json({ error: "Incorrect current password" }, { status: 401 });
-      }
-      if (!newPassword || newPassword.trim().length < 4) {
-        return NextResponse.json({ error: "New password must be at least 4 characters" }, { status: 400 });
-      }
-
-      await saveSiteData({ settings: { ...settings, adminPassword: newPassword.trim() } });
-      return NextResponse.json({ success: true, message: "Password updated successfully" });
+    const body = await req.json().catch(() => ({}));
+    const correctPassword = await getAdminPassword();
+    if (!correctPassword) {
+      return NextResponse.json(
+        { error: "Admin login is turned off. Set ADMIN_PASSWORD in Vercel → Settings → Environment Variables, then redeploy." },
+        { status: 503 }
+      );
     }
 
-    // Normal login
-    const { password } = body;
-    if (password === correctPassword) {
-      // In production/local we issue a session token
-      const token = Buffer.from(`poppyns-admin-${Date.now()}`).toString("base64");
-      const res = NextResponse.json({ success: true, token });
-      res.cookies.set("poppyns_admin_token", token, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-      });
+    if (body.action === "changePassword") {
+      if (!(await isAuthenticated(req))) {
+        return NextResponse.json({ error: "Please log in again." }, { status: 401 });
+      }
+      if (!canChangePasswordInPanel()) {
+        return NextResponse.json(
+          { error: "On the live site, change the password in Vercel → Settings → Environment Variables (ADMIN_PASSWORD), then redeploy." },
+          { status: 400 }
+        );
+      }
+      const { oldPassword, newPassword } = body;
+      if (typeof oldPassword !== "string" || !safeEqual(oldPassword, correctPassword)) {
+        return NextResponse.json({ error: "Incorrect current password" }, { status: 401 });
+      }
+      if (typeof newPassword !== "string" || newPassword.trim().length < 8) {
+        return NextResponse.json({ error: "New password must be at least 8 characters" }, { status: 400 });
+      }
+      await saveSiteData({ settings: { adminPassword: newPassword.trim() } as never });
+      // The session key is derived from the password, so issue a fresh cookie.
+      const { token, maxAge } = createSessionToken(newPassword.trim());
+      const res = NextResponse.json({ success: true, message: "Password updated successfully" });
+      res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions(maxAge));
       return res;
     }
 
-    return NextResponse.json({ error: "Invalid password. Default is admin123" }, { status: 401 });
+    // Login
+    if (typeof body.password === "string" && safeEqual(body.password, correctPassword)) {
+      const { token, maxAge } = createSessionToken(correctPassword);
+      const res = NextResponse.json({ success: true });
+      res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions(maxAge));
+      return res;
+    }
+
+    return NextResponse.json({ error: "Incorrect password" }, { status: 401 });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Authentication error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    if (err instanceof StorageUnavailableError) {
+      return NextResponse.json({ error: err.message }, { status: 503 });
+    }
+    console.error("Admin auth error:", err);
+    return NextResponse.json({ error: "Authentication error" }, { status: 500 });
   }
+}
+
+/** Log out. */
+export async function DELETE() {
+  const res = NextResponse.json({ success: true });
+  res.cookies.set(SESSION_COOKIE, "", sessionCookieOptions(0));
+  return res;
 }

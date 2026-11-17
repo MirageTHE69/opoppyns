@@ -12,6 +12,9 @@ export default function AdminPage() {
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAuthChecking, setIsAuthChecking] = useState<boolean>(true);
+  // Live site: login needs ADMIN_PASSWORD set in Vercel; password changes happen there too.
+  const [loginEnabled, setLoginEnabled] = useState<boolean>(true);
+  const [canChangePassword, setCanChangePassword] = useState<boolean>(false);
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string>("");
@@ -49,13 +52,27 @@ export default function AdminPage() {
 
   // Check initial login
   useEffect(() => {
-    const token = localStorage.getItem("poppyns_admin_auth");
-    if (token) {
-      setIsAuthenticated(true);
-      fetchData();
-    }
-    setIsAuthChecking(false);
+    fetch("/api/admin/auth")
+      .then((r) => r.json())
+      .then((s) => {
+        setLoginEnabled(s.loginEnabled !== false);
+        setCanChangePassword(Boolean(s.canChangePassword));
+        if (s.authenticated) {
+          setIsAuthenticated(true);
+          fetchData();
+        }
+      })
+      .catch(() => {})
+      .finally(() => setIsAuthChecking(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Any 401 from the API means the session expired: back to the login screen.
+  const sessionExpired = () => {
+    setIsAuthenticated(false);
+    setData(null);
+    setAuthError("Your session has ended. Please log in again.");
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,12 +88,11 @@ export default function AdminPage() {
 
       const json = await res.json();
       if (res.ok && json.success) {
-        localStorage.setItem("poppyns_admin_auth", json.token);
         setIsAuthenticated(true);
         fetchData();
         showToast("Welcome to Poppyns Admin Panel", "success");
       } else {
-        setAuthError(json.error || "Incorrect password. Default is admin123");
+        setAuthError(json.error || "Incorrect password");
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Network error";
@@ -87,7 +103,7 @@ export default function AdminPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("poppyns_admin_auth");
+    fetch("/api/admin/auth", { method: "DELETE" }).catch(() => {});
     setIsAuthenticated(false);
     setData(null);
   };
@@ -96,6 +112,7 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/data");
+      if (res.status === 401) return sessionExpired();
       const json = await res.json();
       if (res.ok) {
         setData(json);
@@ -117,6 +134,10 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updated),
       });
+      if (res.status === 401) {
+        sessionExpired();
+        return false;
+      }
       const json = await res.json();
       if (res.ok && json.success) {
         setData(json.data);
@@ -145,6 +166,10 @@ export default function AdminPage() {
         method: "POST",
         body: fd,
       });
+      if (res.status === 401) {
+        sessionExpired();
+        return null;
+      }
       const json = await res.json();
       if (res.ok && json.url) {
         showToast("Image uploaded successfully!", "success");
@@ -344,8 +369,8 @@ export default function AdminPage() {
       setPwdStatus({ message: "New passwords do not match", error: true });
       return;
     }
-    if (pwdChange.newPassword.length < 4) {
-      setPwdStatus({ message: "Password must be at least 4 characters", error: true });
+    if (pwdChange.newPassword.length < 8) {
+      setPwdStatus({ message: "Password must be at least 8 characters", error: true });
       return;
     }
 
@@ -379,12 +404,13 @@ export default function AdminPage() {
     setSaving(true);
     try {
       const res = await fetch("/api/admin/reset", { method: "POST" });
+      if (res.status === 401) return sessionExpired();
       const json = await res.json();
       if (res.ok && json.success) {
         setData(json.data);
         showToast("Site reset to default demo data!", "success");
       } else {
-        showToast("Reset failed", "error");
+        showToast(json.error || "Reset failed", "error");
       }
     } catch {
       showToast("Network error during reset", "error");
@@ -447,10 +473,14 @@ export default function AdminPage() {
               </button>
             </form>
 
-            <div className="adm-login-hint">
-              <span>Default password:</span>
-              <code>admin123</code>
-            </div>
+            {!loginEnabled && (
+              <div className="adm-login-hint">
+                <span>
+                  Admin login is turned off. Set <code>ADMIN_PASSWORD</code> in Vercel → Settings → Environment
+                  Variables, then redeploy.
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -894,6 +924,17 @@ export default function AdminPage() {
                 </form>
 
                 {/* Password Change Box */}
+                {!canChangePassword ? (
+                  <div style={{ background: "var(--adm-surface)", border: "1px solid var(--adm-border)", borderRadius: "var(--adm-radius-lg)", padding: "28px", marginBottom: "32px" }}>
+                    <h3 style={{ fontFamily: "var(--adm-font-serif)", fontSize: "18px", margin: "0 0 8px 0", color: "#fff" }}>
+                      Admin Password
+                    </h3>
+                    <p style={{ color: "var(--adm-muted)", fontSize: "13px", margin: 0 }}>
+                      The live password is the <code>ADMIN_PASSWORD</code> setting in Vercel → Settings → Environment
+                      Variables. Change it there and redeploy.
+                    </p>
+                  </div>
+                ) : (
                 <form onSubmit={handleChangePassword} style={{ background: "var(--adm-surface)", border: "1px solid var(--adm-border)", borderRadius: "var(--adm-radius-lg)", padding: "28px", marginBottom: "32px" }}>
                   <h3 style={{ fontFamily: "var(--adm-font-serif)", fontSize: "18px", margin: "0 0 8px 0", color: "#fff" }}>
                     Change Admin Password
@@ -916,7 +957,7 @@ export default function AdminPage() {
                       value={pwdChange.oldPassword}
                       onChange={(e) => setPwdChange({ ...pwdChange, oldPassword: e.target.value })}
                       required
-                      placeholder="Enter current password (default is admin123)"
+                      placeholder="Enter current password"
                     />
                   </div>
 
@@ -949,6 +990,7 @@ export default function AdminPage() {
                     Update Password
                   </button>
                 </form>
+                )}
 
                 {/* Reset Data */}
                 <div style={{ border: "1px solid rgba(239, 68, 68, 0.2)", borderRadius: "var(--adm-radius-lg)", padding: "24px", background: "rgba(239, 68, 68, 0.05)" }}>

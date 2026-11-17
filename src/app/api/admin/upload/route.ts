@@ -1,34 +1,36 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import { isAuthenticated } from "@/lib/auth";
+import { StorageUnavailableError, saveUpload } from "@/lib/storage";
+
+// Vercel rejects request bodies over 4.5 MB, so cap uploads just below that.
+const MAX_BYTES = 4 * 1024 * 1024;
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif", "image/svg+xml"];
 
 export async function POST(req: Request) {
+  if (!(await isAuthenticated(req))) {
+    return NextResponse.json({ error: "Please log in again." }, { status: 401 });
+  }
   try {
     const formData = await req.formData();
-    const file = formData.get("file") as File | null;
+    const file = formData.get("file");
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return NextResponse.json({ error: "Please upload an image (JPG, PNG, WebP, GIF, AVIF or SVG)." }, { status: 400 });
+    }
+    if (file.size > MAX_BYTES) {
+      return NextResponse.json({ error: "Image is too large. Please keep uploads under 4 MB." }, { status: 413 });
+    }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Clean filename
-    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const uniqueName = `${Date.now()}-${safeName}`;
-
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadDir, { recursive: true });
-
-    const filePath = path.join(uploadDir, uniqueName);
-    await fs.writeFile(filePath, buffer);
-
-    const fileUrl = `/uploads/${uniqueName}`;
-
-    return NextResponse.json({ success: true, url: fileUrl, filename: uniqueName });
+    const url = await saveUpload(file.name, file);
+    return NextResponse.json({ success: true, url, filename: url.split("/").pop() });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Upload failed";
-    return NextResponse.json({ error: message }, { status: 500 });
+    if (err instanceof StorageUnavailableError) {
+      return NextResponse.json({ error: err.message }, { status: 503 });
+    }
+    console.error("Admin upload error:", err);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

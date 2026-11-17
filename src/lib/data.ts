@@ -1,7 +1,9 @@
-import fs from "fs/promises";
-import path from "path";
 import { posts as defaultPosts, type Post } from "@/content/blog";
 import { serviceList as defaultServices, type Service } from "@/content/services";
+import { blobEnabled, readContent, writeContent } from "@/lib/storage";
+// Committed content: bundled into the build, and the starting point before
+// anything has been saved from the admin panel.
+import seedContent from "@/data/content.json";
 
 export type PortfolioProject = {
   id: string;
@@ -90,26 +92,24 @@ export const defaultDatabase: ContentDatabase = {
   settings: defaultSettings,
 };
 
-const DB_PATH = path.join(process.cwd(), "src", "data", "content.json");
+function normalize(data: Partial<ContentDatabase> | null | undefined): ContentDatabase {
+  const d = data ?? {};
+  return {
+    posts: Array.isArray(d.posts) ? d.posts : defaultPosts,
+    services: Array.isArray(d.services) ? d.services : defaultServices,
+    portfolio: Array.isArray(d.portfolio) ? d.portfolio : defaultPortfolio,
+    settings: d.settings ? { ...defaultSettings, ...d.settings } : defaultSettings,
+  };
+}
 
 export async function getSiteData(): Promise<ContentDatabase> {
   try {
-    const raw = await fs.readFile(DB_PATH, "utf-8");
-    const data = JSON.parse(raw);
-    return {
-      posts: Array.isArray(data.posts) ? data.posts : defaultPosts,
-      services: Array.isArray(data.services) ? data.services : defaultServices,
-      portfolio: Array.isArray(data.portfolio) ? data.portfolio : defaultPortfolio,
-      settings: data.settings ? { ...defaultSettings, ...data.settings } : defaultSettings,
-    };
-  } catch {
-    // If file doesn't exist yet, seed it and return default
-    try {
-      await fs.writeFile(DB_PATH, JSON.stringify(defaultDatabase, null, 2), "utf-8");
-    } catch (writeErr) {
-      console.error("Failed to seed default database file:", writeErr);
-    }
-    return defaultDatabase;
+    const saved = (await readContent()) as Partial<ContentDatabase> | null;
+    return normalize(saved ?? (seedContent as Partial<ContentDatabase>));
+  } catch (err) {
+    // Storage hiccup: keep the site up with the committed content.
+    console.error("Failed to read site content, using committed content:", err);
+    return normalize(seedContent as Partial<ContentDatabase>);
   }
 }
 
@@ -122,7 +122,14 @@ export async function saveSiteData(data: Partial<ContentDatabase>): Promise<Cont
     settings: data.settings ? { ...current.settings, ...data.settings } : current.settings,
   };
 
-  await fs.writeFile(DB_PATH, JSON.stringify(updated, null, 2), "utf-8");
+  // The Blob store is public: never put the admin password in it.
+  if (blobEnabled()) {
+    const { adminPassword: _omit, ...publicSettings } = updated.settings;
+    void _omit;
+    await writeContent({ ...updated, settings: publicSettings });
+  } else {
+    await writeContent(updated);
+  }
   return updated;
 }
 

@@ -12,7 +12,7 @@ export type WorkItem = {
 };
 
 export default function Work({ projects: customProjects }: { projects?: WorkItem[] } = {}) {
-  const items = customProjects && customProjects.length > 0 ? customProjects : work.projects;
+  const items: WorkItem[] = customProjects && customProjects.length > 0 ? customProjects : work.projects;
 
   return (
     <section id="work" className="work" data-theme="dark" data-num="07">
